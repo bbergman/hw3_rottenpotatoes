@@ -23,13 +23,53 @@ Background: movies have been added to database
   
 Scenario: restrict to movies with 'PG' or 'R' ratings
   # enter step(s) to check the 'PG' and 'R' checkboxes
+  When I check the following ratings: PG, R
   # enter step(s) to uncheck all other checkboxes
+  And  I uncheck the following ratings: G, PG-13, NC-17
   # enter step to "submit" the search form on the homepage
+  And  I press "ratings_submit"
   # enter step(s) to ensure that PG and R movies are visible
+  Then I should see "The Terminator"
+  And  I should see "When Harry Met Sally"
+  And  I should see "Amelie"
+  And  I should see "The Incredibles"
+  And  I should see "Raiders of the Lost Ark"
   # enter step(s) to ensure that other movies are not visible
+  But  I should not see "Aladdin"
+  And  I should not see "The Help"
+  And  I should not see "Chocolat"
+  And  I should not see "2001: A Space Odyssey"
+  And  I should not see "Chicken Run"
 
 Scenario: no ratings selected
-  # see assignment
+  # enter step(s) to uncheck all of the ratings
+  When  I uncheck the following ratings: G, PG, PG-13, R, NC-17
+  # enter step to "submit" the search form on the homepage
+  And  I press "ratings_submit"
+  # enter step(s) to ensure that other movies are not visible
+  Then I should not see "The Terminator"
+  And  I should not see "When Harry Met Sally"
+  And  I should not see "Amelie"
+  And  I should not see "The Incredibles"
+  And  I should not see "Raiders of the Lost Ark"
+  And  I should not see "Aladdin"
+  And  I should not see "The Help"
+  And  I should not see "Chocolat"
+  And  I should not see "2001: A Space Odyssey"
+  And  I should not see "Chicken Run"
 
 Scenario: all ratings selected
-  # see assignment
+  # enter step(s) to check all the ratings
+  When I check the following ratings: G, PG, PG-13, R, NC-17
+  # enter step to "submit" the search form on the homepage
+  And  I press "ratings_submit"
+  # enter step(s) to ensure that all movies are visible
+  Then I should see all of the movies
+
+Scenario: no ratings selected 2
+  # enter step(s) to uncheck all the ratings
+  When I uncheck the following ratings: G, PG, PG-13, R, NC-17
+  # enter step to "submit" the search form on the homepage
+  And  I press "ratings_submit"
+  # check that no movies were found
+  Then I should see no movies
